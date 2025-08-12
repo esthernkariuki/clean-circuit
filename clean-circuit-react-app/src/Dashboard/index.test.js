@@ -1,4 +1,3 @@
-// Mock ResizeObserver for Recharts and libraries relying on it in Jest environment
 global.ResizeObserver = class {
   observe() {}
   unobserve() {}
@@ -18,7 +17,6 @@ import { useFetchUseList } from "../hooks/useFetchUserList";
 import { useRequests } from "../hooks/useRequests";
 import { useBarChart } from "../hooks/useBarChart";
 
-// Mock localStorage
 const localStorageMock = (() => {
   let store = {};
   return {

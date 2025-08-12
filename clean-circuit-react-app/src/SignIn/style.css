@@ -280,12 +280,12 @@
   display: inline-flex;
   justify-content: center;
   gap: 8px;
-  background-color: #00db00;
+  background-color: #2E6600;
   color: white;
 }
 
 .signin-form-button:hover {
-  background-color: #48994c;
+  background-color: #00db00;
   transform: translateY(-2px);
 }
 

@@ -6,10 +6,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { useFetchSignUp } from '../hooks/useFetchSignUp';
 
 jest.mock('../hooks/useFetchSignUp');
-jest.mock('../hooks/usePaswordToggle', () => ({
+jest.mock('../hooks/usePasswordToggle', () => ({
   usePasswordToggle: () => [false, jest.fn()],
 }));
-jest.mock('../Sharedcomponents/Button', () => ({
+jest.mock('../Sharedcomponents/Buttons', () => ({
   Button: ({ children, ...rest }) => <button {...rest}>{children}</button>,
 }));
 

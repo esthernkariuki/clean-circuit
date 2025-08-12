@@ -12,12 +12,12 @@
 }
 
 .shared-button.primary {
-  background-color: #00db00; 
+  background-color: #2E6600; 
   color: white;
   box-shadow: 0 4px 8px rgba(0, 150, 0, 0.2); 
 }
 .shared-button.primary:hover {
-  background-color: #48994c; 
+  background-color: #00db00; 
   transform: translateY(-2px); 
 }
 

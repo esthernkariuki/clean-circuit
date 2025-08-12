@@ -1,6 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { Sidebar } from "./Sharedcomponents/Sidebar";
+import ViewMatched from "./ViewMatched";
 import "./App.css";
 
 export default function App() {

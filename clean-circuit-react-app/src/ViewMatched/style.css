@@ -1,0 +1,255 @@
+body {
+  margin: 0;
+  background-color: white;
+  color: black;
+  font-size: 18px;
+}
+
+.app-container {
+  background-color: white;
+  min-height: 100vh;
+}
+
+
+main {
+  position: relative;
+  overflow: visible;
+}
+
+main>div {
+  padding-top: 50px;
+}
+
+
+.cloth-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 30px; 
+  padding: 30px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: 2%;
+  margin-left: 25%; 
+}
+
+
+
+.cloth-card {
+  background-color: #e6ebe3;
+  border-radius: 8px;
+  border: 1px solid #d1d1d1;
+  width: 170px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  text-align: center;
+  padding: 35px;
+  box-shadow: none;
+  user-select: none;
+  color: #333333;
+  margin-top: 15%;
+}
+
+.cloth-card:focus,
+.cloth-card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  outline: none;
+}
+
+.cloth-card img {
+  width: 180px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+}
+
+
+.back-icon-large:hover,
+.back-icon-large:focus {
+  color: #272727;
+  outline: none;
+
+}
+
+
+.materials-heading {
+  font-size: 28px;
+  margin-bottom: 22px;
+  font-weight: 700;
+  font-family: 'Georgia', serif;
+  color: #222222;
+  text-align: center;
+}
+
+.selected-image {
+  width: 100%;
+  max-width: 640px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+  margin: 0 auto 36px auto;
+  display: block;
+  border: 1px solid #ccc;
+}
+
+.material-group {
+  margin-bottom: 40px;
+  background: #fafafa;
+  padding: 22px 28px;
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.03);
+  margin-left: 16%;
+}
+
+.material-group h3 {
+  margin-bottom: 20px;
+  color: #333333;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.materials-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.materials-table th,
+.materials-table td {
+  border: 1px solid #d1d1d1;
+  padding: 10px 14px;
+  text-align: left;
+  color: #444444;
+  font-size: 20px;
+}
+
+.materials-table th {
+  background-color: #f7f7f7;
+  color: #222222;
+  font-weight: 500;
+}
+
+.materials-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.material-image-table {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 12px;
+  user-select: none;
+  font-family: Arial, sans-serif;
+}
+
+.paginationButton {
+  background-color: #00db00;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.paginationButton:hover:not(:disabled),
+.paginationButton:focus:not(:disabled) {
+  background-color: #528652;
+  outline: none;
+}
+
+.paginationButton:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.paginationInfo {
+  font-size: 16px;
+  color: #333333;
+  user-select: none;
+}
+@media (max-width: 1200px) {
+    .cloth-grid   {
+      margin-top: -5%;
+      gap: 2px;
+      
+    }
+  .material-group {
+    margin-left: 30%;
+    margin-right: auto;
+    padding: 16px 20px;
+    max-width: 600px;
+    
+    
+  }
+
+  .materials-table th,
+  .materials-table td {
+    font-size: 18px;
+    padding: 6px 10px;
+  }
+    .selected-image {
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+    margin: 0 auto 36px auto;
+    margin-left: 35%;
+  
+  }
+  .back-icon-large {
+    margin-left: 15%;
+    margin-bottom: 10px;
+    margin-top: -10%;
+  }
+}
+
+
+@media (min-width: 1201px) and (max-width: 1500px) {
+  .cloth-grid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1000px;
+    margin-left: 30%;
+    padding: 20px;
+    margin-top: -2%;
+  }
+   .material-group {
+    max-width: 700px;
+    margin-left: 30%;
+    margin-right: auto;
+    padding: 20px 24px;
+    margin-top: -3%;
+  }
+
+  .materials-table th,
+  .materials-table td {
+    font-size: 18px;
+    padding: 8px 12px;
+    margin-top: 20%;
+  }
+
+  .selected-image {
+    max-width: 550px;
+    max-height: 350px;
+    margin-left: 30%;
+  }
+  
+  .back-icon-large {
+    margin-left: 10%;
+    margin-bottom: 20px;
+  }
+}

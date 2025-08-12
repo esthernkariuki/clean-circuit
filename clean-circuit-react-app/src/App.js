@@ -8,6 +8,12 @@ export default function App() {
     <Router>
       <div className="app-layout">
         <Sidebar />
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Navigate to="/matched" replace />} />
+            <Route path="/matched" element={<ViewMatched />} />    
+          </Routes>
+        </div>
       </div>
     </Router>
   );

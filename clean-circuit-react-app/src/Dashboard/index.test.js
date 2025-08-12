@@ -36,7 +36,6 @@ describe("Dashboard Component", () => {
   test("redirects to login if no token", () => {
     localStorage.getItem.mockReturnValueOnce(null);
 
-    // Ensure hooks return valid shapes even if not deeply used here
     useFetchUseList.mockReturnValue({ userName: "", loading: false, error: null });
     useRequests.mockReturnValue({ data: [], loading: false, error: null });
     useBarChart.mockReturnValue({ data: [], loading: false, error: null });
@@ -116,11 +115,11 @@ describe("Dashboard Component", () => {
     );
 
     expect(screen.getByText("Total Requests")).toBeInTheDocument();
-    expect(screen.getByText("5")).toBeInTheDocument(); // 3 + 2
+    expect(screen.getByText("5")).toBeInTheDocument(); 
     expect(screen.getByText("Request Types")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument(); // Type A + Type B
+    expect(screen.getByText("2")).toBeInTheDocument(); 
     expect(screen.getByText("Total Products")).toBeInTheDocument();
-    expect(screen.getByText("15")).toBeInTheDocument(); // 10 + 5
+    expect(screen.getByText("15")).toBeInTheDocument(); 
   });
 
   test("search filters recent activities", async () => {

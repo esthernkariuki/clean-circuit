@@ -89,22 +89,25 @@ height: 18px;
 flex-shrink: 0;
 color: inherit;
 }
-.logout-btn {
+.logout-button {
   display: flex;
   align-items: center;
-  color: inherit;
-  font-size: 1.1rem;
+  gap: 8px;
   background: none;
   border: none;
-  padding: 20px;
+  color: rgb(36, 35, 35);
+  padding: 10px 16px;
   width: 100%;
-  margin-left: 20px;
-  font-weight: 550;
-  margin-top:18px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  margin-left: 5px;
 }
-.logout-btn:hover {
-  background-color: #2daa14; 
+
+.logout-button:hover {
+  background: rgba(0, 0, 0, 0.05); 
 }
+
 
 
 @media (max-width: 899px) {

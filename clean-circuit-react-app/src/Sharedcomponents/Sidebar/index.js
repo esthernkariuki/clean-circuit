@@ -1,42 +1,95 @@
 import React, { useState } from "react";
-import { FaHome, FaList, FaShoppingCart, FaTags } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FaHome, FaList, FaShoppingCart, FaTags, FaSignOutAlt } from "react-icons/fa";
 import "./style.css";
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate(); 
+
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const closeSidebar = () => setSidebarOpen(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
 
   return (
     <>
-      <button className="hamburger-btn" aria-label="Toggle Sidebar" onClick={toggleSidebar} > &#9776;</button>
       <div className={`dashboard-container`}>
         <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
           <div className="sidebar-logo-row">
             <img src="images/logo.png" alt="RenewIt Logo" className="sidebar-logo" />
-            <span className="sidebar-title">
-              <span style={{ fontWeight: 700, fontStyle: "italic" }}>
-                RenewIt
-              </span>
+            <span className="sidebar-title" style={{ fontWeight: 700, fontStyle: "italic" }}>
+              RenewIt
             </span>
           </div>
           <nav>
             <ul>
-              <li className="active">
-                <FaHome /> Home</li>
-              <li><FaList />My Request</li>
-              <li> <FaTags /> Browse Offers </li>
-              <li><FaShoppingCart /> My product </li>
+              <li>
+                <NavLink
+                  to="/dashboard"
+                  end
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                  onClick={closeSidebar} >
+                  <FaHome /> Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/requests"
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                  onClick={closeSidebar}
+                >
+                  <FaList /> My Request
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/offers"
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                  onClick={closeSidebar}
+                >
+                  <FaTags /> Browse Offers
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/products"
+                  className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+                  onClick={closeSidebar}
+                >
+                  <FaShoppingCart /> My product
+                </NavLink>
+              </li>
+            
+              <li>
+                <button
+                  type="button"
+                  className="nav-link logout-button"
+                  onClick={() => {
+                    closeSidebar();
+                    handleLogout();
+                  }}
+                >
+                  <FaSignOutAlt /> Logout
+                </button>
+              </li>
             </ul>
           </nav>
         </aside>
       </div>
-      {sidebarOpen && <div className="sidebar-overlay" onClick={toggleSidebar} data-testid="sidebar-overlay"></div>}
+
+      {sidebarOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
     </>
   );
 }
 
+
 export const ProfileIcon = () => (
-  <div className="profile-icon">
-    <i className="fas fa-user"></i>
-  </div>
-);
+<div className="profile-icon">
+<i className="fas fa-user"></i>
+</div>
+)

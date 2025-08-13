@@ -8,6 +8,7 @@ const getAuthHeaders = () => {
 };
 
 export const addProduct = (formData) =>
+  
   fetch(`${API_BASE}upcycled-products/`, {
     method: 'POST',
     headers: getAuthHeaders(),

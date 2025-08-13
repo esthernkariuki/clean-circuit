@@ -40,6 +40,7 @@ describe('ProductTable component', () => {
       price: 50,
       image: null,
       updated_at: '2025-08-07T10:00:00Z'
+      
     },
     {
       id: 3,
@@ -81,10 +82,10 @@ describe('ProductTable component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    fetchProductsApi.fetchProducts.mockResolvedValue(mockProducts);
-    addProductApi.addProduct.mockResolvedValue({});
-    updateProductApi.updateProduct.mockResolvedValue({});
-    deleteProductApi.deleteProduct.mockResolvedValue({});
+    fetchProducts.fetchProducts.mockResolvedValue(mockProducts);
+    addProduct.addProducts.mockResolvedValue({});
+    updateProduct.updateProducts.mockResolvedValue({});
+    deleteProduct.deleteProduct.mockResolvedValue({});
   });
 
   test('renders products with pagination and enables Prev/Next buttons properly', async () => {

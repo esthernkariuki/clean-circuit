@@ -12,6 +12,7 @@ afterAll(() => {
 });
 
 describe('ProductForm component', () => {
+  
   const mockOnChange = jest.fn();
   const mockOnSubmit = jest.fn(e => e.preventDefault());
   const mockOnCancel = jest.fn();

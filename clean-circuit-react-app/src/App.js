@@ -5,7 +5,9 @@ import ProductList from "./Products";
 import "./App.css";
 
 export default function App() {
+
   return (
+
     <Router>
       <div className="app-layout">
         <Sidebar />
@@ -14,5 +16,6 @@ export default function App() {
       </div>
       </div>
     </Router>
+    
   );
 }

@@ -8,10 +8,12 @@ const getAuthHeaders = () => {
 };
 
 export const updateProduct = (id, formData) =>
+  
   fetch(`${API_BASE}upcycled-products/${id}/`, {
     method: 'PUT',
     headers: getAuthHeaders(),
     body: formData,
+
   })
     .then(res => {
       if (!res.ok) throw new Error('Failed to update product');

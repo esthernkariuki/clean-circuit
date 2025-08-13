@@ -34,6 +34,7 @@ export function useProducts() {
   }, [page]);
 
   const add = useCallback(
+    
     async (formData) => {
       setLoading(true);
       setError(null);

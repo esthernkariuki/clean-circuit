@@ -12,6 +12,7 @@ function ProductForm({ form = {}, onChange, onSubmit, onCancel, editing }) {
       setPreview(null);
 
     }
+    
   }, [editing, form.image]);
 
   const handleImageChange = (e) => {

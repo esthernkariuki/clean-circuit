@@ -8,6 +8,7 @@ const getAuthHeaders = () => {
 };
 
 export const deleteProduct = (id) =>
+  
   fetch(`${API_BASE}upcycled-products/${id}/`, {
     method: 'DELETE',
     headers: getAuthHeaders(),

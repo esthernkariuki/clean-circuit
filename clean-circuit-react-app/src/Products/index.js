@@ -96,6 +96,7 @@ function ProductList() {
   );
 
   return (
+    
     <div className="product-container">
       <h2>UPCYCLED PRODUCTS</h2>
       <button

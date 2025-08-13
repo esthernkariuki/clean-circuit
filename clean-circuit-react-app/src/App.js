@@ -21,6 +21,7 @@ function Layout() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<SigninPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<ProductList />} />
         </Routes>
       </div>
     </div>
@@ -28,18 +29,9 @@ function Layout() {
 }
 
 export default function App() {
-
   return (
-
     <Router>
-      <div className="app-layout">
-        <Sidebar />
-         <div className="main-content">
-        <ProductList/>
-      </div>
-      </div>
       <Layout />
     </Router>
-    
   );
 }

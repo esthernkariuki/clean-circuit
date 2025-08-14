@@ -5,6 +5,7 @@ import SignupPage from "./SignUp";
 import SigninPage from "./SignIn";
 import Dashboard from "./Dashboard";
 import { Sidebar } from "./Sharedcomponents/Sidebar";
+import ProductList from "./Products";
 import "./App.css";
 
 function Layout() {
@@ -20,6 +21,7 @@ function Layout() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<SigninPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/products" element={<ProductList />} />
         </Routes>
       </div>
     </div>

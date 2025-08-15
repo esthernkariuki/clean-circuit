@@ -1,4 +1,5 @@
 name: Deploy React to Vercel
+
 on:
   push:
     branches:
@@ -8,6 +9,7 @@ on:
     branches:
       - main
       - develop
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,19 +24,21 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory:clean-circuit-react-app
+        working-directory: clean-circuit-react-app
 
       - name: Run tests
         run: npm test
-        working-directory:clean-circuit-react-app
+        working-directory: clean-circuit-react-app
 
       - name: Build React app
         run: npm run build
-        working-directory:clean-circuit-react-app
+        working-directory: clean-circuit-react-app
 
       - name: Deploy to Vercel
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: npx vercel --prod --confirm --token $VERCEL_TOKEN
-        working-directory:clean-circuit-react-app
+        working-directory: clean-circuit-react-app
+
+

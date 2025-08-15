@@ -1,9 +1,10 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import ProductModal from ".";
 
 const mockOnSave = jest.fn();
 const mockOnClose = jest.fn();
+global.alert = jest.fn();
 
 test("renders modal with empty form", () => {
   render(<ProductModal open={true} onClose={mockOnClose} onSave={mockOnSave} initialData={null} />);
@@ -23,11 +24,16 @@ test("renders modal with initial data", () => {
   expect(screen.getByPlaceholderText("Enter quantity")).toHaveValue(10);
 });
 
-test("calls onSave with form data", () => {
+test("calls onSave with form data", async () => {
   render(<ProductModal open={true} onClose={mockOnClose} onSave={mockOnSave} initialData={null} />);
+  
   fireEvent.change(screen.getByPlaceholderText("Enter product type"), { target: { value: "Denim" } });
   fireEvent.change(screen.getByPlaceholderText("Enter quantity"), { target: { value: "5" } });
-  fireEvent.submit(screen.getByTestId("product-form"));
+
+  await act(async () => {
+    fireEvent.submit(screen.getByTestId("product-form"));
+  });
+
   expect(mockOnSave).toHaveBeenCalled();
 });
 
@@ -36,5 +42,3 @@ test("calls onClose when cancel is clicked", () => {
   fireEvent.click(screen.getByText("Cancel"));
   expect(mockOnClose).toHaveBeenCalled();
 });
-
-

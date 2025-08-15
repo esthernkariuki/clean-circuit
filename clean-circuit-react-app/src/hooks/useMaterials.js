@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchMaterials } from "../utils/fetchMaterial";
+import { fetchMaterials } from "../utils/api/fetchMaterial";
 
 export function useMaterials() {
   const [selectedCloth, setSelectedCloth] = useState(null);

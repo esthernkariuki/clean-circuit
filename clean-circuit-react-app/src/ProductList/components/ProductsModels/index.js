@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-
-export default function ProductModal({ open, onClose, onSave, initialData }) {
+export default function ProductModal({ open, onClose, initialData, onSave }) {
   const [form, setForm] = useState({
     type: "",
     quantity: "",
     image: null,
   });
 
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -25,9 +25,7 @@ export default function ProductModal({ open, onClose, onSave, initialData }) {
     }
   }, [initialData]);
 
-
   if (!open) return null;
-
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -38,16 +36,28 @@ export default function ProductModal({ open, onClose, onSave, initialData }) {
     }
   };
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const data = new FormData();
     data.append("type", form.type);
     data.append("quantity", form.quantity);
     if (form.image) data.append("image", form.image);
-    onSave(data);
-  };
 
+    const userId = localStorage.getItem("userId") || "123";
+    data.append("upcycler", userId);
+
+    setSubmitting(true);
+    try {
+      await onSave(data);
+      alert(initialData ? "Product updated successfully!" : "Product added successfully!");
+      onClose();
+    } catch (error) {
+      alert("Error saving product: " + error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="modal-backdrop">
@@ -63,6 +73,7 @@ export default function ProductModal({ open, onClose, onSave, initialData }) {
               onChange={handleChange}
               required
               placeholder="Enter product type"
+              disabled={submitting}
             />
           </label>
           <label>
@@ -75,6 +86,7 @@ export default function ProductModal({ open, onClose, onSave, initialData }) {
               onChange={handleChange}
               required
               placeholder="Enter quantity"
+              disabled={submitting}
             />
           </label>
           <label>
@@ -84,13 +96,14 @@ export default function ProductModal({ open, onClose, onSave, initialData }) {
               type="file"
               accept="image/*"
               onChange={handleChange}
+              disabled={submitting}
             />
           </label>
           <div className="form-buttons">
-            <button type="submit" className="save-btn">
-              Save
+            <button type="submit" className="save-btn" disabled={submitting}>
+              {submitting ? "Saving..." : "Save"}
             </button>
-            <button type="button" onClick={onClose} className="cancel-btn">
+            <button type="button" onClick={onClose} className="cancel-btn" disabled={submitting}>
               Cancel
             </button>
           </div>

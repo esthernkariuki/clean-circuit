@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
-import { useMaterials } from "./hooks/useMaterials";
-import { clothTypes, navigationData } from "./utils/fetchMaterial";
+import { useMaterials } from "../hooks/useMaterials";
+import { clothTypes,navigationData } from "../utils/api/fetchMaterial";
 import "./style.css";
 
 export default function ViewMatched() {

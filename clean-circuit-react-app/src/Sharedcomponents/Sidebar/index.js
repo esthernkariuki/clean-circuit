@@ -48,7 +48,7 @@ export function Sidebar() {
               </li>
               <li>
                 <NavLink
-                  to="/offers"
+                  to="/matched"
                   className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
                   onClick={closeSidebar}
                 >

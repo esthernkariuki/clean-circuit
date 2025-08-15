@@ -7,18 +7,21 @@ const getAuthHeaders = () => {
   };
 };
 
-export const updateProduct = (id, formData) =>
-  
-  fetch(`${API_BASE}/upcycler-requests/${id}/`, {
+export const updateProduct = async (id, formData) => {
+  const response = await fetch(`${API_BASE}upcycler-requests/${id}/`, {
     method: 'PUT',
-    headers: getAuthHeaders(),
-    body: formData,
+    headers: getAuthHeaders(), 
+    body: formData,            
+  });
 
-  })
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to update upcycler request');
-      return res.json();
-    })
-    .catch(error => {
-      throw new Error(error.message ?? "Couldn't update upcycler requests");
-    });
+  if (!response.ok) {
+    let message = 'Failed to update upcycler request';
+    try {
+      const errorData = await response.json();
+      if (errorData && errorData.detail) message = errorData.detail;
+      else if (typeof errorData === 'object') message = JSON.stringify(errorData);
+    } catch {}
+    throw new Error(message);
+  }
+  return response.json();
+};

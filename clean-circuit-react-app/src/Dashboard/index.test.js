@@ -1,4 +1,5 @@
 global.ResizeObserver = class {
+  constructor(callback) {}
   observe() {}
   unobserve() {}
   disconnect() {}
@@ -6,7 +7,7 @@ global.ResizeObserver = class {
 
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import Dashboard from "./index";
 
 jest.mock("../hooks/useFetchUserList");
@@ -27,6 +28,22 @@ const localStorageMock = (() => {
 })();
 Object.defineProperty(window, "localStorage", { value: localStorageMock });
 
+function renderWithRouter(component, route = "/") {
+  const futureFlags = {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  };
+
+  const router = createMemoryRouter(
+    [{ path: "/*", element: component }],
+    {
+      initialEntries: [route],
+      future: futureFlags,
+    }
+  );
+  return render(<RouterProvider router={router} future={futureFlags} />);
+}
+
 describe("Dashboard Component", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -40,11 +57,7 @@ describe("Dashboard Component", () => {
     useRequests.mockReturnValue({ data: [], loading: false, error: null });
     useBarChart.mockReturnValue({ data: [], loading: false, error: null });
 
-    render(
-      <MemoryRouter>
-        <Dashboard />
-      </MemoryRouter>
-    );
+    renderWithRouter(<Dashboard />);
 
     expect(screen.queryByText(/Dashboard Overview/i)).not.toBeInTheDocument();
   });
@@ -58,11 +71,7 @@ describe("Dashboard Component", () => {
     useRequests.mockReturnValue({ data: null, loading: true, error: null });
     useBarChart.mockReturnValue({ data: null, loading: true, error: null });
 
-    render(
-      <MemoryRouter>
-        <Dashboard />
-      </MemoryRouter>
-    );
+    renderWithRouter(<Dashboard />);
 
     expect(screen.getByText(/Loading dashboard/i)).toBeInTheDocument();
   });
@@ -76,11 +85,7 @@ describe("Dashboard Component", () => {
     useRequests.mockReturnValue({ data: [], loading: false, error: null });
     useBarChart.mockReturnValue({ data: [], loading: false, error: null });
 
-    render(
-      <MemoryRouter>
-        <Dashboard />
-      </MemoryRouter>
-    );
+    renderWithRouter(<Dashboard />);
 
     expect(screen.getByText(/Error: User fetch error/i)).toBeInTheDocument();
   });
@@ -108,18 +113,14 @@ describe("Dashboard Component", () => {
       error: null,
     });
 
-    render(
-      <MemoryRouter>
-        <Dashboard />
-      </MemoryRouter>
-    );
+    renderWithRouter(<Dashboard />);
 
     expect(screen.getByText("Total Requests")).toBeInTheDocument();
-    expect(screen.getByText("5")).toBeInTheDocument(); 
+    expect(screen.getByText("5")).toBeInTheDocument();
     expect(screen.getByText("Request Types")).toBeInTheDocument();
-    expect(screen.getByText("2")).toBeInTheDocument(); 
+    expect(screen.getByText("2")).toBeInTheDocument();
     expect(screen.getByText("Total Products")).toBeInTheDocument();
-    expect(screen.getByText("15")).toBeInTheDocument(); 
+    expect(screen.getByText("15")).toBeInTheDocument();
   });
 
   test("search filters recent activities", async () => {
@@ -142,11 +143,7 @@ describe("Dashboard Component", () => {
       error: null,
     });
 
-    render(
-      <MemoryRouter>
-        <Dashboard />
-      </MemoryRouter>
-    );
+    renderWithRouter(<Dashboard />);
 
     expect(screen.getByText(/3 Type A requested/i)).toBeInTheDocument();
     expect(screen.getByText(/2 Type B requested/i)).toBeInTheDocument();
@@ -184,11 +181,7 @@ describe("Dashboard Component", () => {
       error: null,
     });
 
-    render(
-      <MemoryRouter >
-        <Dashboard />
-      </MemoryRouter>
-    );
+    renderWithRouter(<Dashboard />);
 
     const prevButton = screen.getByText("Previous");
     const nextButton = screen.getByText("Next");

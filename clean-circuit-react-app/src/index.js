@@ -1,14 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// Create your routes array/object as per your app
 const router = createBrowserRouter(
   [
-    // your route definitions, e.g. { path: "/", element: <App /> }
   ],
   {
     future: {
@@ -21,7 +18,6 @@ const router = createBrowserRouter(
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* Use RouterProvider instead of BrowserRouter */}
     <RouterProvider router={router} />
   </React.StrictMode>
 );

@@ -6,6 +6,8 @@ import SigninPage from "./SignIn";
 import Dashboard from "./Dashboard";
 import { Sidebar } from "./Sharedcomponents/Sidebar";
 import ProductList from "./Products";
+import UpcyclerRequests from "./ProductList";
+import ViewMatched from "./ViewMatched";
 import "./App.css";
 
 function Layout() {
@@ -22,6 +24,8 @@ function Layout() {
           <Route path="/login" element={<SigninPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products" element={<ProductList />} />
+          <Route path="/requests" element= {<UpcyclerRequests/>}/>
+          <Route path="/offers" element={<ViewMatched />} />  
         </Routes>
       </div>
     </div>

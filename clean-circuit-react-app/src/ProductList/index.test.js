@@ -3,7 +3,8 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import UpcyclerRequests from "../ProductList/index";
 import * as hooks from "../hooks/useFetchUpcyclerRequest";
 
-// Mock the custom hook
+global.alert = jest.fn();
+
 const mockRequests = [
   {
     request: 1,
@@ -89,5 +90,3 @@ test("shows an error message if error exists", () => {
   render(<UpcyclerRequests />);
   expect(screen.getByText("Error!")).toBeInTheDocument();
 });
-
-

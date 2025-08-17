@@ -1,18 +1,19 @@
 const API_BASE = process.env.REACT_APP_BASE_URL;
 
+const getAuthToken = () => localStorage.getItem('token');
+
 const getAuthHeaders = () => {
-  const token = localStorage.getItem('token');
+  const token = getAuthToken();
   return {
-    Authorization: `Token ${token}`,
-    Accept: 'application/json',
+    Authorization: `Token ${token}`,  
   };
 };
 
 export const addProduct = async (formData) => {
-  const response = await fetch(`${API_BASE}/upcycler-requests/`, {
+  const response = await fetch(`${API_BASE}upcycler-requests/`, {
     method: 'POST',
     headers: getAuthHeaders(),
-    body: formData,
+    body: formData,            
   });
 
   if (!response.ok) {

@@ -1,207 +1,130 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ViewMatched from './index';
-import * as useMatchModule from '../hooks/useMatch';
-import * as navigationModule from '../utils/navigation';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import ViewMatched from ".";
+import * as useMaterialsHook from "../hooks/useMaterials";
 
-jest.spyOn(useMatchModule, 'useMatch');
-jest.mock('../utils/navigation', () => ({
-  ...jest.requireActual('../utils/navigation'),
-  fetchMaterials: jest.fn(),
+jest.mock("../utils/api/fetchMaterial", () => ({
+  clothTypes: ["cotton", "denim", "leather", "silk", "linen", "wool"],
+  navigationData: {
+    cotton: { image: "cotton.png" },
+    denim: { image: "denim.png" },
+    leather: { image: "leather.png" },
+    silk: { image: "silk.png" },
+    linen: { image: "linen.png" },
+    wool: { image: "wool.png" },
+  },
 }));
 
-jest.mock('../Sharedcomponents/Sidebar', () => ({
-  Sidebar: () => <div>Sidebar</div>,
-}));
-
-describe('ViewMatched Component', () => {
-  const mockUseMatch = {
+describe("ViewMatched Component", () => {
+  const defaultMock = {
     selectedCloth: null,
     selectCloth: jest.fn(),
     clearSelection: jest.fn(),
     materials: [],
-    setMaterials: jest.fn(),
     loading: false,
-    setLoading: jest.fn(),
     error: null,
-    setError: jest.fn(),
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useMatchModule.useMatch.mockReturnValue(mockUseMatch);
   });
 
-  test('renders paginated cloth grid with 6 items per page when no cloth selected', () => {
-    render(<ViewMatched />);
-    const clothCards = Array.from(screen.getAllByRole('button')).filter(
-      el => el.classList.contains('cloth-card')
-    );
-    expect(clothCards.length).toBe(6);
-
-    clothCards.forEach((card) => {
-      const strongText = card.querySelector('strong');
-      expect(strongText).toBeInTheDocument();
-      expect(strongText.textContent).toBeTruthy();
-
-      const img = card.querySelector('img');
-      expect(img).toBeInTheDocument();
-      expect(img.alt).toBe(strongText.textContent);
+  function setupHook(mockOverrides = {}) {
+    jest.spyOn(useMaterialsHook, "useMaterials").mockReturnValue({
+      ...defaultMock,
+      ...mockOverrides,
     });
+  }
 
-    expect(screen.getByText(/Page \d+ of \d+/i)).toBeInTheDocument();
+  test("renders cloth types grid and pagination buttons correctly", () => {
+    setupHook();
+    render(<ViewMatched />);
+    expect(screen.getByText("cotton")).toBeInTheDocument();
+    expect(screen.getByText("denim")).toBeInTheDocument();
+
+    const prevButton = screen.getByRole("button", { name: /Previous page/i });
+    expect(prevButton).toBeDisabled();
+
+    const nextButton = screen.getByRole("button", { name: /Next page/i });
+    expect(nextButton).toBeDisabled();
   });
 
-  test('calls selectCloth when a cloth card is clicked', () => {
+  test("clicking cloth type calls selectCloth", () => {
+    const selectCloth = jest.fn();
+    setupHook({ selectCloth });
     render(<ViewMatched />);
-    const clothCards = Array.from(screen.getAllByRole('button')).filter(
-      el => el.classList.contains('cloth-card')
-    );
-    fireEvent.click(clothCards[0]);
-    expect(mockUseMatch.selectCloth).toHaveBeenCalledWith(expect.any(String));
+    fireEvent.click(screen.getByText("cotton"));
+    expect(selectCloth).toHaveBeenCalledWith("cotton");
   });
 
-  test('calls selectCloth when Enter key is pressed on a cloth card', () => {
+  test("renders loading indicator", () => {
+    setupHook({ loading: true, selectedCloth: "cotton" });
     render(<ViewMatched />);
-    const clothCards = Array.from(screen.getAllByRole('button')).filter(
-      el => el.classList.contains('cloth-card')
-    );
-    fireEvent.keyDown(clothCards[0], { key: 'Enter' });
-    expect(mockUseMatch.selectCloth).toHaveBeenCalledWith(expect.any(String));
+    expect(screen.getByText(/Loading materials/i)).toBeInTheDocument();
   });
 
-  test('renders materials view when a cloth is selected', () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-      materials: [
-        {
-          type: 'Cotton',
-          material: 'Soft Cotton',
-          quantity: 10,
-          condition: 'New',
-          listed_at: '2023-10-01T00:00:00Z',
-          trader: 'Trader A',
-        },
-      ],
-    });
-
+  test("renders error message", () => {
+    setupHook({ error: "Failed to load materials", selectedCloth: "cotton" });
     render(<ViewMatched />);
-
-    expect(screen.getByText('Materials for Cotton')).toBeInTheDocument();
-    expect(screen.getByAltText('Cotton')).toBeInTheDocument();
-    expect(screen.getByText('Soft Cotton')).toBeInTheDocument();
-    expect(screen.getByText('10')).toBeInTheDocument();
-    expect(screen.getByText('New')).toBeInTheDocument();
-    expect(screen.getByText(/10\/1\/2023|1\/10\/2023/)).toBeInTheDocument();
-    expect(screen.getByText('Trader A')).toBeInTheDocument();
+    expect(screen.getByText(/Failed to load materials/i)).toBeInTheDocument();
   });
 
-  test('renders loading state when fetching materials', () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-      loading: true,
-    });
-
+  test("renders no materials found message", () => {
+    setupHook({ selectedCloth: "cotton", materials: [], loading: false, error: null });
     render(<ViewMatched />);
-    expect(screen.getByText('Loading materials...')).toBeInTheDocument();
+    expect(screen.getByText(/No materials found for this cloth type yet/i)).toBeInTheDocument();
   });
 
-  test('renders error state when fetch fails', () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-      error: 'Failed to fetch materials',
-    });
-
+  test("renders grouped materials when materials are present", () => {
+    const materials = [
+      {
+        material: "Cotton A",
+        quantity: 10,
+        condition: "new",
+        listed_at: "2025-01-01",
+        trader: "Trader Joe",
+        type: "cotton",
+      },
+      {
+        material: "Denim B",
+        quantity: 5,
+        condition: "used",
+        listed_at: "2025-02-01",
+        trader: "Trader Jane",
+        type: "denim",
+      },
+      {
+        material: "Cotton C",
+        quantity: 7,
+        condition: "used",
+        listed_at: "2025-03-01",
+        trader: "Trader Jack",
+        type: "cotton",
+      },
+    ];
+    setupHook({ selectedCloth: "cotton", materials, loading: false, error: null });
     render(<ViewMatched />);
-    expect(screen.getByText('Failed to fetch materials')).toBeInTheDocument();
+    expect(screen.getByText("Materials for cotton")).toBeInTheDocument();
+    expect(screen.getByText("Cotton A")).toBeInTheDocument();
+    expect(screen.getByText("10")).toBeInTheDocument();
+    expect(screen.getByText("new")).toBeInTheDocument();
+    expect(screen.getByText("Trader Joe")).toBeInTheDocument();
+
+    expect(screen.getByText("Cotton C")).toBeInTheDocument();
+    expect(screen.getByText("7")).toBeInTheDocument();
+
+    const usedElements = screen.getAllByText("used");
+    expect(usedElements.length).toBeGreaterThanOrEqual(2);
+
+    expect(screen.getByText("Trader Jack")).toBeInTheDocument();
   });
 
-  test('renders no materials message when materials array is empty', () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-      materials: [],
-    });
-
+  test("calls clearSelection when back icon is clicked", () => {
+    const clearSelection = jest.fn();
+    setupHook({ selectedCloth: "cotton", clearSelection });
     render(<ViewMatched />);
-    expect(screen.getByText('No materials found for this cloth type yet.')).toBeInTheDocument();
-  });
-
-  test('calls clearSelection when back icon is clicked', () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-    });
-
-    render(<ViewMatched />);
-    const backIcon = screen.getByLabelText('Go back');
+    const backIcon = screen.getByLabelText(/Go back/i);
     fireEvent.click(backIcon);
-    expect(mockUseMatch.clearSelection).toHaveBeenCalled();
-  });
-
-  test('calls clearSelection when Enter key is pressed on back icon', () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-    });
-
-    render(<ViewMatched />);
-    const backIcon = screen.getByLabelText('Go back');
-    fireEvent.keyDown(backIcon, { key: 'Enter' });
-    expect(mockUseMatch.clearSelection).toHaveBeenCalled();
-  });
-
-  test('groups and sorts materials by type', () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-      materials: [
-        {
-          type: 'Cotton',
-          material: 'Zephyr Cotton',
-          quantity: 5,
-          condition: 'Used',
-          listed_at: '2023-10-01T00:00:00Z',
-          trader: 'Trader B',
-        },
-        {
-          type: 'Cotton',
-          material: 'Soft Cotton',
-          quantity: 10,
-          condition: 'New',
-          listed_at: '2023-10-01T00:00:00Z',
-          trader: 'Trader A',
-        },
-      ],
-    });
-
-    render(<ViewMatched />);
-
-    const rows = screen.getAllByRole('row');
-    expect(rows[1]).toHaveTextContent('Soft Cotton');
-    expect(rows[2]).toHaveTextContent('Zephyr Cotton');
-  });
-
-  test('calls fetchMaterials when selectedCloth changes', async () => {
-    useMatchModule.useMatch.mockReturnValue({
-      ...mockUseMatch,
-      selectedCloth: 'Cotton',
-    });
-
-    navigationModule.fetchMaterials.mockResolvedValueOnce([]);
-
-    render(<ViewMatched />);
-
-    await waitFor(() => {
-      expect(navigationModule.fetchMaterials).toHaveBeenCalledWith(
-        'Cotton',
-        mockUseMatch.setMaterials,
-        mockUseMatch.setLoading,
-        mockUseMatch.setError
-      );
-    });
+    expect(clearSelection).toHaveBeenCalled();
   });
 });

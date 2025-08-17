@@ -9,7 +9,7 @@ const getAuthHeaders = () => {
 
 export const fetchProducts = (page = 1) =>
   
-  fetch(`${API_BASE}/upcycler-requests/?page=${page}`, {   
+  fetch(`${API_BASE}upcycler-requests/?page=${page}`, {   
     method: 'GET',
     headers: {
       ...getAuthHeaders(),

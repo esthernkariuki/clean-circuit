@@ -10,7 +10,7 @@ import UpcyclerRequests from "./ProductList";
 import ViewMatched from "./ViewMatched";
 import "./App.css";
 
-function Layout() {
+export function Layout() {
   const location = useLocation();
   const showSidebar = !["/", "/signup", "/login"].includes(location.pathname);
 
@@ -25,7 +25,7 @@ function Layout() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/products" element={<ProductList />} />
           <Route path="/requests" element= {<UpcyclerRequests/>}/>
-          <Route path="/offers" element={<ViewMatched />} />  
+          <Route path="/matched" element={<ViewMatched />} />  
         </Routes>
       </div>
     </div>

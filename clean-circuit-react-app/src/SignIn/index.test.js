@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import SignIn from "./index";
-import { BrowserRouter } from "react-router-dom";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
 
 const mockNavigate = jest.fn();
 jest.mock("react-router-dom", () => {
@@ -22,7 +22,22 @@ jest.mock("../utils/api/fetchLogin", () => ({
   loginUser: (...args) => mockLoginUser(...args),
 }));
 
-const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>);
+function renderWithRouter(ui, route = "/") {
+  const futureFlags = {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  };
+
+  const router = createMemoryRouter(
+    [{ path: "/*", element: ui }],
+    {
+      initialEntries: [route],
+      future: futureFlags,
+    }
+  );
+
+  return render(<RouterProvider router={router} future={futureFlags} />);
+}
 
 describe("SignIn", () => {
   beforeEach(() => {
@@ -39,6 +54,7 @@ describe("SignIn", () => {
     expect(screen.getByText(/Don't have an account/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Sign Up/i })).toHaveAttribute("href", "/signup");
   });
+
   test("can type in input fields", () => {
     renderWithRouter(<SignIn />);
     const emailInput = screen.getByLabelText(/Email or Username/i);

@@ -10,7 +10,7 @@ const getAuthHeaders = () => {
 
 export const deleteProduct = (id) =>
   
-  fetch(`${API_BASE}/upcycler-requests/${id}/`, {
+  fetch(`${API_BASE}upcycler-requests/${id}/`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
   })

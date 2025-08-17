@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import SignUp from './index';
-import { BrowserRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 import { useFetchSignUp } from '../hooks/useFetchSignUp';
 
@@ -13,7 +13,22 @@ jest.mock('../Sharedcomponents/Buttons', () => ({
   Button: ({ children, ...rest }) => <button {...rest}>{children}</button>,
 }));
 
-const renderWithRouter = (ui) => render(<BrowserRouter>{ui}</BrowserRouter>);
+function renderWithRouter(ui, route = '/') {
+  const futureFlags = {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  };
+
+  const router = createMemoryRouter(
+    [{ path: '/*', element: ui }],
+    {
+      initialEntries: [route],
+      future: futureFlags,
+    }
+  );
+
+  return render(<RouterProvider router={router} future={futureFlags} />);
+}
 
 describe('SignUp Component', () => {
   beforeEach(() => {

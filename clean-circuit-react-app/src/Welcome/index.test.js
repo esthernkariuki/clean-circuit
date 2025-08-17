@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import WelcomePage from './index';
-import { BrowserRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+
 jest.mock('../Sharedcomponents/Buttons', () => ({
   Button: ({ children, ...props }) => <button {...props}>{children}</button>,
 }));
+
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
   const original = jest.requireActual('react-router-dom');
@@ -14,14 +16,29 @@ jest.mock('react-router-dom', () => {
   };
 });
 
+function renderWithRouter(ui, route = '/') {
+  const futureFlags = {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  };
+
+  const router = createMemoryRouter(
+    [
+      { path: '/*', element: ui },
+    ],
+    {
+      initialEntries: [route],
+      future: futureFlags,
+    }
+  );
+
+  return render(<RouterProvider router={router} future={futureFlags} />);
+}
+
 describe('WelcomePage', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
   });
-
-  function renderWithRouter(ui) {
-    return render(<BrowserRouter>{ui}</BrowserRouter>);
-  }
 
   test('renders welcome message and images', () => {
     renderWithRouter(<WelcomePage />);

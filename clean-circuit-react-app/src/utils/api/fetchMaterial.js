@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_API_BASE_URL;
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 export const navigationData = {
   Acrylic: { image: '/images/acrylic.jpg' },
@@ -22,7 +22,7 @@ export async function fetchMaterials(clothType) {
 
   try {
     const response = await fetch(
-      `${baseUrl}/materials?type=${encodeURIComponent(clothType)}`
+      `${baseUrl}materials?type=${encodeURIComponent(clothType)}`
     );
 
     if (!response.ok) {

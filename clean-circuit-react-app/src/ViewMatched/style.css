@@ -186,7 +186,11 @@ main>div {
     padding: 20px 20px;
     max-width: 900px;
     margin-left: 30%;
+<<<<<<< HEAD
     margin-top: 20px;
+=======
+    margin-top: 0;
+>>>>>>> facca0c03dc0559d69a33c205d4477c621125365
   }
 
   .cloth-card {
@@ -220,7 +224,10 @@ main>div {
     max-width: 500px;
     max-height: 320px;
     margin-left: 28%;
+<<<<<<< HEAD
     margin-bottom: 90px;
+=======
+>>>>>>> facca0c03dc0559d69a33c205d4477c621125365
   }
 
   .back-icon-large {
@@ -240,7 +247,11 @@ main>div {
     margin-left: 28%;
     padding: 20px;
     gap: 18px;
+<<<<<<< HEAD
     margin-top: 4px;
+=======
+    margin-top: -1%;
+>>>>>>> facca0c03dc0559d69a33c205d4477c621125365
   }
   
   .material-group {
@@ -261,7 +272,10 @@ main>div {
     max-width: 530px;
     max-height: 340px;
     margin-left: 28%;
+<<<<<<< HEAD
     margin-bottom: 90px;
+=======
+>>>>>>> facca0c03dc0559d69a33c205d4477c621125365
   }
 
   .back-icon-large {
@@ -281,7 +295,11 @@ main>div {
     margin-left: 30%;
     padding: 22px;
     gap: 20px;
+<<<<<<< HEAD
     margin-top: 4px;
+=======
+    margin-top: -2%;
+>>>>>>> facca0c03dc0559d69a33c205d4477c621125365
   }
   
   .material-group {
@@ -296,8 +314,11 @@ main>div {
   .materials-table td {
     font-size: 19px;
     padding: 9px 14px;
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> facca0c03dc0559d69a33c205d4477c621125365
   }
   
   .selected-image {

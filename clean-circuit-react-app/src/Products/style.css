@@ -23,7 +23,11 @@
 }
 .product-table {
   
+<<<<<<< HEAD
   width: 80% !important;
+=======
+  width: 86% !important;
+>>>>>>> facca0c03dc0559d69a33c205d4477c621125365
   border-collapse: collapse;
   background: rgb(248, 248, 248);
   box-shadow: 10px 10px 16px #F8F8F8;
